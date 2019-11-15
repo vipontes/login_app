@@ -17,6 +17,12 @@ dependencies:
   scoped_model: ^0.3.0
   font_awesome_flutter: ^8.0.1
   http: ^0.12.0
+  dio: ^3.0.0
+  equatable: ^0.4.0
+  dartz: ^0.8.6
+  shared_preferences: ^0.5.3+4
+  json_annotation: ^2.0.0
+  tuple: ^1.0.3
 
 dev_dependencies:
   flutter_test:
