@@ -20,14 +20,22 @@ dependencies:
   dio: ^3.0.0
   equatable: ^0.4.0
   dartz: ^0.8.6
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.3
   json_annotation: ^2.0.0
-  tuple: ^1.0.3
+  device_info: ^0.4.1
+  toast: ^0.1.5
+  email_validator: ^1.0.0
+  moor_flutter: ^1.4.0
+  # For the UI
+  provider: ^3.0.0+1
+  flutter_slidable: ^0.5.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^4.0.0
+  moor_generator: ^1.4.0
+  build_runner:
 
 flutter:
 

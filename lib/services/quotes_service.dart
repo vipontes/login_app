@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -13,10 +14,12 @@ class QuotesApiService implements IQuotesApi {
    */
   Dio dio = new Dio(
     new BaseOptions(
-      baseUrl: "http://quotes.easify.info/v1",
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-    ),
+        baseUrl: "http://quotes.easify.info/v1",
+        connectTimeout: 5000,
+        receiveTimeout: 3000,
+        validateStatus: (status) {
+          return status < 500;
+        }),
   );
 
   // ignore: slash_for_doc_comments
@@ -37,17 +40,24 @@ class QuotesApiService implements IQuotesApi {
   @override
   Future<Either<ErrorHandler, Token>> login(
       String email, String password, String device) async {
-    Response response = await dio.post("/login", data: {
-      'email': email,
-      'password': password,
-      'device': device,
-    });
-
-    if (response.statusCode == 200) {
-      Token tokens = Token.fromJson(response.data);
-      return Right(tokens);
-    } else {
-      return Left(new ErrorHandler(response.statusCode, response.data.message));
+    try {
+      Response response = await dio.post("/login", data: {
+        'email': email,
+        'password': password,
+        'device': device,
+      });
+      if (response.statusCode == 200) {
+        Token tokens = Token.fromJson(response.data);
+        return Right(tokens);
+      } else {
+        return Left(
+            new ErrorHandler(response.statusCode, response.data.message));
+      }
+    } on DioError catch (error) {
+      final Map<String, dynamic> decodedMessage =
+          json.decode(error.response.toString());
+      return Left(new ErrorHandler(
+          error.response.statusCode, decodedMessage['message']));
     }
   }
 }

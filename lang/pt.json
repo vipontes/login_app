@@ -1,8 +1,10 @@
 {
-  "first_string": "Olá! Esta é a primeira mensagem.",
-  "second_string": "Se este tutorial te ajuda, dá um joinha e assine o canal Reso Coder 😉",
-  "thrid_string": "Que porra é essa?",
-
+  "email_hint": "E-mail",
+  "password_hint": "Senha",
+  "forgot_password": "Esqueci minha senha?",
+  "login_button": "ENTRAR",
+  "empty_email": "E-mail inválido",
+  "empty_password": "Por favor informe sua senha",
 
   "api_error": "Erro ao extrair dados do servidor"
 }
