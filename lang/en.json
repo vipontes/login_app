@@ -5,6 +5,9 @@
   "login_button": "LOGIN",
   "empty_email": "Invalid e-mail",
   "empty_password": "Please, fill in your password",
-
-  "api_error": "Error getting data from server"
+  "welcome": "Welcome to Curitiba!",
+  "api_error": "Error getting data from server",
+  "app_title": "LoginApp",
+  "404": "Something went wrong...",
+  "404_title": "404 - Not found"
 }

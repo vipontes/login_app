@@ -5,6 +5,9 @@
   "login_button": "ENTRAR",
   "empty_email": "E-mail inválido",
   "empty_password": "Por favor informe sua senha",
-
-  "api_error": "Erro ao extrair dados do servidor"
+  "welcome": "Bem vindo a Curitiba!",
+  "api_error": "Erro ao extrair dados do servidor",
+  "app_title": "LoginApp",
+  "404": "Alguma coisa deu errado...",
+  "404_title": "404 - Recurso não encontrado"
 }

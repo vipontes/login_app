@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:login_app/services/quotes_service.dart';
 import 'package:login_app/utils/app_localizations.dart';
-import 'package:login_app/view/login_page.dart';
-import 'package:login_app/view_model/login_page_view_model.dart';
+import 'package:login_app/utils/route_generator.dart';
 import 'package:provider/provider.dart';
 
 import 'database/moor_database.dart';
 
-final LoginPageViewModel loginPageViewModel =
-    LoginPageViewModel(apiSvc: QuotesApiService());
-
-void main() => runApp(LoginApp(loginPageViewModel: loginPageViewModel));
+void main() => runApp(LoginApp());
 
 class LoginApp extends StatelessWidget {
-  final LoginPageViewModel loginPageViewModel;
-
-  LoginApp({@required this.loginPageViewModel});
-
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -45,7 +36,8 @@ class LoginApp extends StatelessWidget {
           }
           return supportedLocales.first;
         },
-        home: LoginPage(viewModel: loginPageViewModel),
+        initialRoute: '/login',
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }

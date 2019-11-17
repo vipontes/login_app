@@ -207,20 +207,326 @@ class $LoginTokensTable extends LoginTokens
   }
 }
 
+class UsuarioLogadoData extends DataClass
+    implements Insertable<UsuarioLogadoData> {
+  final int usuarioId;
+  final String usuarioNome;
+  final String usuarioEmail;
+  final int usuarioAtivo;
+  final String usuarioSobre;
+  UsuarioLogadoData(
+      {@required this.usuarioId,
+      @required this.usuarioNome,
+      @required this.usuarioEmail,
+      @required this.usuarioAtivo,
+      @required this.usuarioSobre});
+  factory UsuarioLogadoData.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return UsuarioLogadoData(
+      usuarioId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}usuario_id']),
+      usuarioNome: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}usuario_nome']),
+      usuarioEmail: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}usuario_email']),
+      usuarioAtivo: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}usuario_ativo']),
+      usuarioSobre: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}usuario_sobre']),
+    );
+  }
+  factory UsuarioLogadoData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return UsuarioLogadoData(
+      usuarioId: serializer.fromJson<int>(json['usuarioId']),
+      usuarioNome: serializer.fromJson<String>(json['usuarioNome']),
+      usuarioEmail: serializer.fromJson<String>(json['usuarioEmail']),
+      usuarioAtivo: serializer.fromJson<int>(json['usuarioAtivo']),
+      usuarioSobre: serializer.fromJson<String>(json['usuarioSobre']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson(
+      {ValueSerializer serializer = const ValueSerializer.defaults()}) {
+    return {
+      'usuarioId': serializer.toJson<int>(usuarioId),
+      'usuarioNome': serializer.toJson<String>(usuarioNome),
+      'usuarioEmail': serializer.toJson<String>(usuarioEmail),
+      'usuarioAtivo': serializer.toJson<int>(usuarioAtivo),
+      'usuarioSobre': serializer.toJson<String>(usuarioSobre),
+    };
+  }
+
+  @override
+  T createCompanion<T extends UpdateCompanion<UsuarioLogadoData>>(
+      bool nullToAbsent) {
+    return UsuarioLogadoCompanion(
+      usuarioId: usuarioId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioId),
+      usuarioNome: usuarioNome == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioNome),
+      usuarioEmail: usuarioEmail == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioEmail),
+      usuarioAtivo: usuarioAtivo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioAtivo),
+      usuarioSobre: usuarioSobre == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioSobre),
+    ) as T;
+  }
+
+  UsuarioLogadoData copyWith(
+          {int usuarioId,
+          String usuarioNome,
+          String usuarioEmail,
+          int usuarioAtivo,
+          String usuarioSobre}) =>
+      UsuarioLogadoData(
+        usuarioId: usuarioId ?? this.usuarioId,
+        usuarioNome: usuarioNome ?? this.usuarioNome,
+        usuarioEmail: usuarioEmail ?? this.usuarioEmail,
+        usuarioAtivo: usuarioAtivo ?? this.usuarioAtivo,
+        usuarioSobre: usuarioSobre ?? this.usuarioSobre,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('UsuarioLogadoData(')
+          ..write('usuarioId: $usuarioId, ')
+          ..write('usuarioNome: $usuarioNome, ')
+          ..write('usuarioEmail: $usuarioEmail, ')
+          ..write('usuarioAtivo: $usuarioAtivo, ')
+          ..write('usuarioSobre: $usuarioSobre')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      usuarioId.hashCode,
+      $mrjc(
+          usuarioNome.hashCode,
+          $mrjc(usuarioEmail.hashCode,
+              $mrjc(usuarioAtivo.hashCode, usuarioSobre.hashCode)))));
+  @override
+  bool operator ==(other) =>
+      identical(this, other) ||
+      (other is UsuarioLogadoData &&
+          other.usuarioId == usuarioId &&
+          other.usuarioNome == usuarioNome &&
+          other.usuarioEmail == usuarioEmail &&
+          other.usuarioAtivo == usuarioAtivo &&
+          other.usuarioSobre == usuarioSobre);
+}
+
+class UsuarioLogadoCompanion extends UpdateCompanion<UsuarioLogadoData> {
+  final Value<int> usuarioId;
+  final Value<String> usuarioNome;
+  final Value<String> usuarioEmail;
+  final Value<int> usuarioAtivo;
+  final Value<String> usuarioSobre;
+  const UsuarioLogadoCompanion({
+    this.usuarioId = const Value.absent(),
+    this.usuarioNome = const Value.absent(),
+    this.usuarioEmail = const Value.absent(),
+    this.usuarioAtivo = const Value.absent(),
+    this.usuarioSobre = const Value.absent(),
+  });
+  UsuarioLogadoCompanion copyWith(
+      {Value<int> usuarioId,
+      Value<String> usuarioNome,
+      Value<String> usuarioEmail,
+      Value<int> usuarioAtivo,
+      Value<String> usuarioSobre}) {
+    return UsuarioLogadoCompanion(
+      usuarioId: usuarioId ?? this.usuarioId,
+      usuarioNome: usuarioNome ?? this.usuarioNome,
+      usuarioEmail: usuarioEmail ?? this.usuarioEmail,
+      usuarioAtivo: usuarioAtivo ?? this.usuarioAtivo,
+      usuarioSobre: usuarioSobre ?? this.usuarioSobre,
+    );
+  }
+}
+
+class $UsuarioLogadoTable extends UsuarioLogado
+    with TableInfo<$UsuarioLogadoTable, UsuarioLogadoData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $UsuarioLogadoTable(this._db, [this._alias]);
+  final VerificationMeta _usuarioIdMeta = const VerificationMeta('usuarioId');
+  GeneratedIntColumn _usuarioId;
+  @override
+  GeneratedIntColumn get usuarioId => _usuarioId ??= _constructUsuarioId();
+  GeneratedIntColumn _constructUsuarioId() {
+    return GeneratedIntColumn(
+      'usuario_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _usuarioNomeMeta =
+      const VerificationMeta('usuarioNome');
+  GeneratedTextColumn _usuarioNome;
+  @override
+  GeneratedTextColumn get usuarioNome =>
+      _usuarioNome ??= _constructUsuarioNome();
+  GeneratedTextColumn _constructUsuarioNome() {
+    return GeneratedTextColumn(
+      'usuario_nome',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _usuarioEmailMeta =
+      const VerificationMeta('usuarioEmail');
+  GeneratedTextColumn _usuarioEmail;
+  @override
+  GeneratedTextColumn get usuarioEmail =>
+      _usuarioEmail ??= _constructUsuarioEmail();
+  GeneratedTextColumn _constructUsuarioEmail() {
+    return GeneratedTextColumn(
+      'usuario_email',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _usuarioAtivoMeta =
+      const VerificationMeta('usuarioAtivo');
+  GeneratedIntColumn _usuarioAtivo;
+  @override
+  GeneratedIntColumn get usuarioAtivo =>
+      _usuarioAtivo ??= _constructUsuarioAtivo();
+  GeneratedIntColumn _constructUsuarioAtivo() {
+    return GeneratedIntColumn(
+      'usuario_ativo',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _usuarioSobreMeta =
+      const VerificationMeta('usuarioSobre');
+  GeneratedTextColumn _usuarioSobre;
+  @override
+  GeneratedTextColumn get usuarioSobre =>
+      _usuarioSobre ??= _constructUsuarioSobre();
+  GeneratedTextColumn _constructUsuarioSobre() {
+    return GeneratedTextColumn(
+      'usuario_sobre',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [usuarioId, usuarioNome, usuarioEmail, usuarioAtivo, usuarioSobre];
+  @override
+  $UsuarioLogadoTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'usuario_logado';
+  @override
+  final String actualTableName = 'usuario_logado';
+  @override
+  VerificationContext validateIntegrity(UsuarioLogadoCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.usuarioId.present) {
+      context.handle(_usuarioIdMeta,
+          usuarioId.isAcceptableValue(d.usuarioId.value, _usuarioIdMeta));
+    } else if (usuarioId.isRequired && isInserting) {
+      context.missing(_usuarioIdMeta);
+    }
+    if (d.usuarioNome.present) {
+      context.handle(_usuarioNomeMeta,
+          usuarioNome.isAcceptableValue(d.usuarioNome.value, _usuarioNomeMeta));
+    } else if (usuarioNome.isRequired && isInserting) {
+      context.missing(_usuarioNomeMeta);
+    }
+    if (d.usuarioEmail.present) {
+      context.handle(
+          _usuarioEmailMeta,
+          usuarioEmail.isAcceptableValue(
+              d.usuarioEmail.value, _usuarioEmailMeta));
+    } else if (usuarioEmail.isRequired && isInserting) {
+      context.missing(_usuarioEmailMeta);
+    }
+    if (d.usuarioAtivo.present) {
+      context.handle(
+          _usuarioAtivoMeta,
+          usuarioAtivo.isAcceptableValue(
+              d.usuarioAtivo.value, _usuarioAtivoMeta));
+    } else if (usuarioAtivo.isRequired && isInserting) {
+      context.missing(_usuarioAtivoMeta);
+    }
+    if (d.usuarioSobre.present) {
+      context.handle(
+          _usuarioSobreMeta,
+          usuarioSobre.isAcceptableValue(
+              d.usuarioSobre.value, _usuarioSobreMeta));
+    } else if (usuarioSobre.isRequired && isInserting) {
+      context.missing(_usuarioSobreMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {usuarioId};
+  @override
+  UsuarioLogadoData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return UsuarioLogadoData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(UsuarioLogadoCompanion d) {
+    final map = <String, Variable>{};
+    if (d.usuarioId.present) {
+      map['usuario_id'] = Variable<int, IntType>(d.usuarioId.value);
+    }
+    if (d.usuarioNome.present) {
+      map['usuario_nome'] = Variable<String, StringType>(d.usuarioNome.value);
+    }
+    if (d.usuarioEmail.present) {
+      map['usuario_email'] = Variable<String, StringType>(d.usuarioEmail.value);
+    }
+    if (d.usuarioAtivo.present) {
+      map['usuario_ativo'] = Variable<int, IntType>(d.usuarioAtivo.value);
+    }
+    if (d.usuarioSobre.present) {
+      map['usuario_sobre'] = Variable<String, StringType>(d.usuarioSobre.value);
+    }
+    return map;
+  }
+
+  @override
+  $UsuarioLogadoTable createAlias(String alias) {
+    return $UsuarioLogadoTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
   $LoginTokensTable _loginTokens;
   $LoginTokensTable get loginTokens => _loginTokens ??= $LoginTokensTable(this);
+  $UsuarioLogadoTable _usuarioLogado;
+  $UsuarioLogadoTable get usuarioLogado =>
+      _usuarioLogado ??= $UsuarioLogadoTable(this);
   LoginDao _loginDao;
   LoginDao get loginDao => _loginDao ??= LoginDao(this as AppDatabase);
+  UsuarioLogadoDao _usuarioLogadoDao;
+  UsuarioLogadoDao get usuarioLogadoDao =>
+      _usuarioLogadoDao ??= UsuarioLogadoDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [loginTokens];
-}
-
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
-mixin _$LoginDaoMixin on DatabaseAccessor<AppDatabase> {
-  $LoginTokensTable get loginTokens => db.loginTokens;
+  List<TableInfo> get allTables => [loginTokens, usuarioLogado];
 }

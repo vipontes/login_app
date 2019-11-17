@@ -50,8 +50,10 @@ class QuotesApiService implements IQuotesApi {
         Token tokens = Token.fromJson(response.data);
         return Right(tokens);
       } else {
+        final Map<String, dynamic> decodedMessage =
+            json.decode(response.toString());
         return Left(
-            new ErrorHandler(response.statusCode, response.data.message));
+            new ErrorHandler(response.statusCode, decodedMessage['message']));
       }
     } on DioError catch (error) {
       final Map<String, dynamic> decodedMessage =

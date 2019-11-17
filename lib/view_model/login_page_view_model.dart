@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:login_app/database/login_dao.dart';
 import 'package:login_app/database/moor_database.dart';
 import 'package:login_app/interfaces/i_quotes_api.dart';
 import 'package:login_app/model/token.dart';
 import 'package:login_app/services/error_handler/error_handler.dart';
 import 'package:meta/meta.dart';
+import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class LoginPageViewModel extends Model {
@@ -52,6 +55,7 @@ class LoginPageViewModel extends Model {
 
     if (decodedResponse is Token) {
       _tokens = decodedResponse;
+      _decodeJwt(_tokens.token);
     } else if (decodedResponse is ErrorHandler) {
       _error = decodedResponse;
     }
@@ -59,8 +63,50 @@ class LoginPageViewModel extends Model {
     return _tokens != null;
   }
 
-  Future<void> saveToken(LoginDao database) async {
+  Future<void> saveToken(BuildContext context) async {
+    final database = Provider.of<LoginDao>(context);
     await database.insertToken(new LoginToken(
         id: null, token: _tokens.token, refresh_token: _tokens.refreshToken));
+  }
+
+  String _decodeBase64(String str) {
+    String output = str.replaceAll('-', '+').replaceAll('_', '/');
+
+    switch (output.length % 4) {
+      case 0:
+        break;
+      case 2:
+        output += '==';
+        break;
+      case 3:
+        output += '=';
+        break;
+      default:
+        throw Exception('Illegal base64url string!"');
+    }
+
+    return utf8.decode(base64Url.decode(output));
+  }
+
+  Map<String, dynamic> parseJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      throw Exception('invalid token');
+    }
+
+    final payload = _decodeBase64(parts[1]);
+    final payloadMap = json.decode(payload);
+    if (payloadMap is! Map<String, dynamic>) {
+      throw Exception('invalid payload');
+    }
+
+    return payloadMap;
+  }
+
+  _decodeJwt(String token) {
+    Map<String, dynamic> tokenDecoded = parseJwt(token);
+    int usuarioId = tokenDecoded['usuarioId'];
+    print(tokenDecoded);
+    print(usuarioId);
   }
 }
