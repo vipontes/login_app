@@ -8,6 +8,8 @@ import 'package:login_app/view_model/login_page_view_model.dart';
 import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
+  LoginPage({Key key}) : super(key: key);
+
   final LoginPageViewModel viewModel =
       LoginPageViewModel(apiSvc: QuotesApiService());
 
@@ -16,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey scrollKey = GlobalKey();
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -45,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        key: scrollKey,
         child: Form(
           key: _formKey,
           child: Column(

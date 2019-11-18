@@ -29,7 +29,12 @@ class LoginApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        localeResolutionCallback: (locale, supportedLocales) {
+        localeResolutionCallback:
+            (Locale locale, Iterable<Locale> supportedLocales) {
+          if (locale == null) {
+            return supportedLocales.first;
+          }
+
           for (var supportedLocale in supportedLocales) {
             if (supportedLocale.languageCode == locale.languageCode &&
                 supportedLocale.countryCode == locale.countryCode) {
