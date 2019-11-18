@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import 'database/moor_database.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 void main() => runApp(LoginApp());
 
 class LoginApp extends StatelessWidget {
@@ -38,6 +40,7 @@ class LoginApp extends StatelessWidget {
         },
         initialRoute: '/login',
         onGenerateRoute: RouteGenerator.generateRoute,
+        navigatorKey: navigatorKey,
       ),
     );
   }

@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
     var success = await widget.viewModel.login(email, password);
     if (success == true) {
-      widget.viewModel.saveToken(context);
+      widget.viewModel.saveToken();
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     } else {
@@ -40,6 +40,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
+
+    widget.viewModel.context = context;
   }
 
   @override

@@ -5,7 +5,10 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:login_app/interfaces/i_quotes_api.dart';
 import 'package:login_app/model/token.dart';
+import 'package:login_app/model/usuario.dart';
 import 'package:login_app/services/error_handler/error_handler.dart';
+
+import 'interceptor/app_interceptors.dart';
 
 class QuotesApiService implements IQuotesApi {
   // ignore: slash_for_doc_comments
@@ -22,6 +25,10 @@ class QuotesApiService implements IQuotesApi {
         }),
   );
 
+  Dio addInterceptors(Dio dio) {
+    dio.interceptors.add(AppInterceptors());
+  }
+
   // ignore: slash_for_doc_comments
   /**
    * @brief Implementação do Singleton
@@ -30,7 +37,9 @@ class QuotesApiService implements IQuotesApi {
   factory QuotesApiService() {
     return _singleton;
   }
-  QuotesApiService._internal();
+  QuotesApiService._internal() {
+    dio = addInterceptors(dio);
+  }
 
   // ignore: slash_for_doc_comments
   /**
@@ -49,6 +58,29 @@ class QuotesApiService implements IQuotesApi {
       if (response.statusCode == 200) {
         Token tokens = Token.fromJson(response.data);
         return Right(tokens);
+      } else {
+        final Map<String, dynamic> decodedMessage =
+            json.decode(response.toString());
+        return Left(
+            new ErrorHandler(response.statusCode, decodedMessage['message']));
+      }
+    } on DioError catch (error) {
+      final Map<String, dynamic> decodedMessage =
+          json.decode(error.response.toString());
+      return Left(new ErrorHandler(
+          error.response.statusCode, decodedMessage['message']));
+    }
+  }
+
+  @override
+  Future<Either<ErrorHandler, Usuario>> usuario(int usuarioId) async {
+    try {
+      Response response = await dio.get("/usuario/$usuarioId",
+          options: Options(headers: {"requiresToken": true}));
+
+      if (response.statusCode == 200) {
+        Usuario usuario = Usuario.fromJson(response.data);
+        return Right(usuario);
       } else {
         final Map<String, dynamic> decodedMessage =
             json.decode(response.toString());

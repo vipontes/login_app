@@ -31,6 +31,11 @@ class LoginPageViewModel extends Model {
 
   final IQuotesApi apiSvc;
 
+  BuildContext _context;
+  set context(BuildContext value) {
+    _context = value;
+  }
+
   LoginPageViewModel({@required this.apiSvc});
 
   Future<bool> login(String email, String password) async {
@@ -55,7 +60,7 @@ class LoginPageViewModel extends Model {
 
     if (decodedResponse is Token) {
       _tokens = decodedResponse;
-      _decodeJwt(_tokens.token);
+      _saveUser(_tokens.token);
     } else if (decodedResponse is ErrorHandler) {
       _error = decodedResponse;
     }
@@ -63,8 +68,8 @@ class LoginPageViewModel extends Model {
     return _tokens != null;
   }
 
-  Future<void> saveToken(BuildContext context) async {
-    final database = Provider.of<LoginDao>(context);
+  Future<void> saveToken() async {
+    final database = Provider.of<LoginDao>(_context);
     await database.insertToken(new LoginToken(
         id: null, token: _tokens.token, refresh_token: _tokens.refreshToken));
   }
@@ -103,10 +108,14 @@ class LoginPageViewModel extends Model {
     return payloadMap;
   }
 
-  _decodeJwt(String token) {
+  _saveUser(String token) {
     Map<String, dynamic> tokenDecoded = parseJwt(token);
     int usuarioId = tokenDecoded['usuarioId'];
-    print(tokenDecoded);
-    print(usuarioId);
+  }
+
+  _setUserFromSQLite(int usuarioId) async {
+    final database = Provider.of<LoginDao>(_context);
+    await database.insertToken(new LoginToken(
+        id: null, token: _tokens.token, refresh_token: _tokens.refreshToken));
   }
 }
