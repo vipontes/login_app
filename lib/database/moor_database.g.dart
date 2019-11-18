@@ -207,26 +207,25 @@ class $LoginTokensTable extends LoginTokens
   }
 }
 
-class UsuarioLogadoData extends DataClass
-    implements Insertable<UsuarioLogadoData> {
+class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
   final int usuarioId;
   final String usuarioNome;
   final String usuarioEmail;
   final int usuarioAtivo;
   final String usuarioSobre;
-  UsuarioLogadoData(
+  UsuarioLogado(
       {@required this.usuarioId,
       @required this.usuarioNome,
       @required this.usuarioEmail,
       @required this.usuarioAtivo,
       @required this.usuarioSobre});
-  factory UsuarioLogadoData.fromData(
+  factory UsuarioLogado.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    return UsuarioLogadoData(
+    return UsuarioLogado(
       usuarioId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}usuario_id']),
       usuarioNome: stringType
@@ -239,9 +238,9 @@ class UsuarioLogadoData extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}usuario_sobre']),
     );
   }
-  factory UsuarioLogadoData.fromJson(Map<String, dynamic> json,
+  factory UsuarioLogado.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return UsuarioLogadoData(
+    return UsuarioLogado(
       usuarioId: serializer.fromJson<int>(json['usuarioId']),
       usuarioNome: serializer.fromJson<String>(json['usuarioNome']),
       usuarioEmail: serializer.fromJson<String>(json['usuarioEmail']),
@@ -262,9 +261,9 @@ class UsuarioLogadoData extends DataClass
   }
 
   @override
-  T createCompanion<T extends UpdateCompanion<UsuarioLogadoData>>(
+  T createCompanion<T extends UpdateCompanion<UsuarioLogado>>(
       bool nullToAbsent) {
-    return UsuarioLogadoCompanion(
+    return UsuarioLogadosCompanion(
       usuarioId: usuarioId == null && nullToAbsent
           ? const Value.absent()
           : Value(usuarioId),
@@ -283,13 +282,13 @@ class UsuarioLogadoData extends DataClass
     ) as T;
   }
 
-  UsuarioLogadoData copyWith(
+  UsuarioLogado copyWith(
           {int usuarioId,
           String usuarioNome,
           String usuarioEmail,
           int usuarioAtivo,
           String usuarioSobre}) =>
-      UsuarioLogadoData(
+      UsuarioLogado(
         usuarioId: usuarioId ?? this.usuarioId,
         usuarioNome: usuarioNome ?? this.usuarioNome,
         usuarioEmail: usuarioEmail ?? this.usuarioEmail,
@@ -298,7 +297,7 @@ class UsuarioLogadoData extends DataClass
       );
   @override
   String toString() {
-    return (StringBuffer('UsuarioLogadoData(')
+    return (StringBuffer('UsuarioLogado(')
           ..write('usuarioId: $usuarioId, ')
           ..write('usuarioNome: $usuarioNome, ')
           ..write('usuarioEmail: $usuarioEmail, ')
@@ -318,7 +317,7 @@ class UsuarioLogadoData extends DataClass
   @override
   bool operator ==(other) =>
       identical(this, other) ||
-      (other is UsuarioLogadoData &&
+      (other is UsuarioLogado &&
           other.usuarioId == usuarioId &&
           other.usuarioNome == usuarioNome &&
           other.usuarioEmail == usuarioEmail &&
@@ -326,26 +325,26 @@ class UsuarioLogadoData extends DataClass
           other.usuarioSobre == usuarioSobre);
 }
 
-class UsuarioLogadoCompanion extends UpdateCompanion<UsuarioLogadoData> {
+class UsuarioLogadosCompanion extends UpdateCompanion<UsuarioLogado> {
   final Value<int> usuarioId;
   final Value<String> usuarioNome;
   final Value<String> usuarioEmail;
   final Value<int> usuarioAtivo;
   final Value<String> usuarioSobre;
-  const UsuarioLogadoCompanion({
+  const UsuarioLogadosCompanion({
     this.usuarioId = const Value.absent(),
     this.usuarioNome = const Value.absent(),
     this.usuarioEmail = const Value.absent(),
     this.usuarioAtivo = const Value.absent(),
     this.usuarioSobre = const Value.absent(),
   });
-  UsuarioLogadoCompanion copyWith(
+  UsuarioLogadosCompanion copyWith(
       {Value<int> usuarioId,
       Value<String> usuarioNome,
       Value<String> usuarioEmail,
       Value<int> usuarioAtivo,
       Value<String> usuarioSobre}) {
-    return UsuarioLogadoCompanion(
+    return UsuarioLogadosCompanion(
       usuarioId: usuarioId ?? this.usuarioId,
       usuarioNome: usuarioNome ?? this.usuarioNome,
       usuarioEmail: usuarioEmail ?? this.usuarioEmail,
@@ -355,11 +354,11 @@ class UsuarioLogadoCompanion extends UpdateCompanion<UsuarioLogadoData> {
   }
 }
 
-class $UsuarioLogadoTable extends UsuarioLogado
-    with TableInfo<$UsuarioLogadoTable, UsuarioLogadoData> {
+class $UsuarioLogadosTable extends UsuarioLogados
+    with TableInfo<$UsuarioLogadosTable, UsuarioLogado> {
   final GeneratedDatabase _db;
   final String _alias;
-  $UsuarioLogadoTable(this._db, [this._alias]);
+  $UsuarioLogadosTable(this._db, [this._alias]);
   final VerificationMeta _usuarioIdMeta = const VerificationMeta('usuarioId');
   GeneratedIntColumn _usuarioId;
   @override
@@ -432,13 +431,13 @@ class $UsuarioLogadoTable extends UsuarioLogado
   List<GeneratedColumn> get $columns =>
       [usuarioId, usuarioNome, usuarioEmail, usuarioAtivo, usuarioSobre];
   @override
-  $UsuarioLogadoTable get asDslTable => this;
+  $UsuarioLogadosTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'usuario_logado';
+  String get $tableName => _alias ?? 'usuario_logados';
   @override
-  final String actualTableName = 'usuario_logado';
+  final String actualTableName = 'usuario_logados';
   @override
-  VerificationContext validateIntegrity(UsuarioLogadoCompanion d,
+  VerificationContext validateIntegrity(UsuarioLogadosCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
     if (d.usuarioId.present) {
@@ -483,13 +482,13 @@ class $UsuarioLogadoTable extends UsuarioLogado
   @override
   Set<GeneratedColumn> get $primaryKey => {usuarioId};
   @override
-  UsuarioLogadoData map(Map<String, dynamic> data, {String tablePrefix}) {
+  UsuarioLogado map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return UsuarioLogadoData.fromData(data, _db, prefix: effectivePrefix);
+    return UsuarioLogado.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  Map<String, Variable> entityToSql(UsuarioLogadoCompanion d) {
+  Map<String, Variable> entityToSql(UsuarioLogadosCompanion d) {
     final map = <String, Variable>{};
     if (d.usuarioId.present) {
       map['usuario_id'] = Variable<int, IntType>(d.usuarioId.value);
@@ -510,8 +509,8 @@ class $UsuarioLogadoTable extends UsuarioLogado
   }
 
   @override
-  $UsuarioLogadoTable createAlias(String alias) {
-    return $UsuarioLogadoTable(_db, alias);
+  $UsuarioLogadosTable createAlias(String alias) {
+    return $UsuarioLogadosTable(_db, alias);
   }
 }
 
@@ -519,14 +518,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
   $LoginTokensTable _loginTokens;
   $LoginTokensTable get loginTokens => _loginTokens ??= $LoginTokensTable(this);
-  $UsuarioLogadoTable _usuarioLogado;
-  $UsuarioLogadoTable get usuarioLogado =>
-      _usuarioLogado ??= $UsuarioLogadoTable(this);
+  $UsuarioLogadosTable _usuarioLogados;
+  $UsuarioLogadosTable get usuarioLogados =>
+      _usuarioLogados ??= $UsuarioLogadosTable(this);
   LoginDao _loginDao;
   LoginDao get loginDao => _loginDao ??= LoginDao(this as AppDatabase);
   UsuarioLogadoDao _usuarioLogadoDao;
   UsuarioLogadoDao get usuarioLogadoDao =>
       _usuarioLogadoDao ??= UsuarioLogadoDao(this as AppDatabase);
   @override
-  List<TableInfo> get allTables => [loginTokens, usuarioLogado];
+  List<TableInfo> get allTables => [loginTokens, usuarioLogados];
 }

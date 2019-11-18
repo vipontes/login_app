@@ -7,16 +7,21 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:login_app/database/login_dao.dart';
 import 'package:login_app/database/moor_database.dart';
+import 'package:login_app/database/usuario_logado_dao.dart';
 import 'package:login_app/interfaces/i_quotes_api.dart';
+import 'package:login_app/main.dart';
 import 'package:login_app/model/token.dart';
+import 'package:login_app/model/usuario.dart';
 import 'package:login_app/services/error_handler/error_handler.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPageViewModel extends Model {
   Token _tokens;
   Token get tokens => _tokens;
+  Usuario _loggedUser;
   set tokens(Token value) {
     _tokens = value;
     notifyListeners();
@@ -30,11 +35,6 @@ class LoginPageViewModel extends Model {
   }
 
   final IQuotesApi apiSvc;
-
-  BuildContext _context;
-  set context(BuildContext value) {
-    _context = value;
-  }
 
   LoginPageViewModel({@required this.apiSvc});
 
@@ -60,7 +60,7 @@ class LoginPageViewModel extends Model {
 
     if (decodedResponse is Token) {
       _tokens = decodedResponse;
-      _saveUser(_tokens.token);
+      _saveToken();
     } else if (decodedResponse is ErrorHandler) {
       _error = decodedResponse;
     }
@@ -68,10 +68,48 @@ class LoginPageViewModel extends Model {
     return _tokens != null;
   }
 
-  Future<void> saveToken() async {
-    final database = Provider.of<LoginDao>(_context);
-    await database.insertToken(new LoginToken(
+  Future<bool> getUsuarioFromServer(int usuarioId) async {
+    _loggedUser = null;
+    _error = null;
+
+    Either<ErrorHandler, Usuario> response = await apiSvc?.usuario(usuarioId);
+
+    var decodedResponse = response.fold((error) => error, (val) => val);
+
+    if (decodedResponse is Usuario) {
+      _loggedUser = decodedResponse;
+    } else if (decodedResponse is ErrorHandler) {
+      _error = decodedResponse;
+    }
+
+    return _loggedUser != null;
+  }
+
+  Future<void> _saveToken() async {
+    final database = Provider.of<LoginDao>(navigatorKey.currentContext);
+    await database.insertToken(LoginToken(
         id: null, token: _tokens.token, refresh_token: _tokens.refreshToken));
+
+    final prefs = await SharedPreferences.getInstance();
+    final key = "token";
+    prefs.setString(key, _tokens.token);
+
+    var usuarioId = _getUserFromToken(_tokens.token);
+    var userGet = await getUsuarioFromServer(usuarioId);
+
+//    if (userGet) {
+//      await saveUsuarioLogado(_loggedUser);
+//    }
+  }
+
+  Future<void> saveUsuarioLogado(Usuario usuario) async {
+    final database = Provider.of<UsuarioLogadoDao>(navigatorKey.currentContext);
+    await database.insertUser(UsuarioLogado(
+        usuarioId: usuario.usuarioId,
+        usuarioNome: usuario.usuarioNome,
+        usuarioEmail: usuario.usuarioEmail,
+        usuarioAtivo: usuario.usuarioAtivo,
+        usuarioSobre: usuario.usuarioSobre));
   }
 
   String _decodeBase64(String str) {
@@ -108,14 +146,15 @@ class LoginPageViewModel extends Model {
     return payloadMap;
   }
 
-  _saveUser(String token) {
+  int _getUserFromToken(String token) {
     Map<String, dynamic> tokenDecoded = parseJwt(token);
     int usuarioId = tokenDecoded['usuarioId'];
+    return usuarioId;
   }
 
   _setUserFromSQLite(int usuarioId) async {
-    final database = Provider.of<LoginDao>(_context);
-    await database.insertToken(new LoginToken(
+    final database = Provider.of<LoginDao>(navigatorKey.currentContext);
+    await database.insertToken(LoginToken(
         id: null, token: _tokens.token, refresh_token: _tokens.refreshToken));
   }
 }

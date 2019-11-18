@@ -7,5 +7,5 @@ part of 'usuario_logado_dao.dart';
 // **************************************************************************
 
 mixin _$UsuarioLogadoDaoMixin on DatabaseAccessor<AppDatabase> {
-  $UsuarioLogadoTable get usuarioLogado => db.usuarioLogado;
+  $UsuarioLogadosTable get usuarioLogados => db.usuarioLogados;
 }

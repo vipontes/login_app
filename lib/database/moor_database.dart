@@ -7,7 +7,7 @@ import 'usuario_logado_dao.dart';
 part 'moor_database.g.dart';
 
 @UseMoor(
-    tables: [LoginTokens, UsuarioLogado], daos: [LoginDao, UsuarioLogadoDao])
+    tables: [LoginTokens, UsuarioLogados], daos: [LoginDao, UsuarioLogadoDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super((FlutterQueryExecutor.inDatabaseFolder(

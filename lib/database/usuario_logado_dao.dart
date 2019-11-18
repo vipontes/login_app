@@ -4,7 +4,7 @@ import 'moor_database.dart';
 
 part 'usuario_logado_dao.g.dart';
 
-class UsuarioLogado extends Table {
+class UsuarioLogados extends Table {
   IntColumn get usuarioId => integer()();
   TextColumn get usuarioNome => text()();
   TextColumn get usuarioEmail => text()();
@@ -15,16 +15,13 @@ class UsuarioLogado extends Table {
   Set<Column> get primaryKey => {usuarioId};
 }
 
-@UseDao(tables: [UsuarioLogado])
+@UseDao(tables: [UsuarioLogados])
 class UsuarioLogadoDao extends DatabaseAccessor<AppDatabase>
     with _$UsuarioLogadoDaoMixin {
   UsuarioLogadoDao(AppDatabase db) : super(db);
 
-  Future<UsuarioLogadoData> getLoggedUser() =>
-      select(usuarioLogado).getSingle();
-  Future insertUser(UsuarioLogadoData user) => into(usuarioLogado).insert(user);
-  Future updateUser(UsuarioLogadoData user) =>
-      update(usuarioLogado).replace(user);
-  Future deleteUser(UsuarioLogadoData user) =>
-      delete(usuarioLogado).delete(user);
+  Future<UsuarioLogado> getLoggedUser() => select(usuarioLogados).getSingle();
+  Future insertUser(UsuarioLogado user) => into(usuarioLogados).insert(user);
+  Future updateUser(UsuarioLogado user) => update(usuarioLogados).replace(user);
+  Future deleteUser(UsuarioLogado user) => delete(usuarioLogados).delete(user);
 }

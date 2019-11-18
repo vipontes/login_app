@@ -38,7 +38,7 @@ class QuotesApiService implements IQuotesApi {
     return _singleton;
   }
   QuotesApiService._internal() {
-    dio = addInterceptors(dio);
+    addInterceptors(dio);
   }
 
   // ignore: slash_for_doc_comments
@@ -79,7 +79,9 @@ class QuotesApiService implements IQuotesApi {
           options: Options(headers: {"requiresToken": true}));
 
       if (response.statusCode == 200) {
-        Usuario usuario = Usuario.fromJson(response.data);
+        final Map<String, dynamic> decodedMessage =
+            json.decode(response.data.toString());
+        Usuario usuario = Usuario.fromMap(decodedMessage);
         return Right(usuario);
       } else {
         final Map<String, dynamic> decodedMessage =
