@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:login_app/utils/jwt_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
@@ -14,9 +15,14 @@ class AppInterceptors extends Interceptor {
 
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.get("token");
-
-      options.headers.addAll({"Authorization": "Bearer $token"});
-
+      final tokenDecoded = JwtHelper.parseJwt(token);
+      final expiredAt = tokenDecoded['expired_at'];
+      var parsedDate = DateTime.parse(expiredAt);
+      var now = new DateTime.now();
+      final difference = parsedDate.difference(now).inSeconds;
+      if (difference > 0) {
+        options.headers.addAll({"Authorization": "Bearer $token"});
+      }
       return super.onRequest(options);
     }
 
@@ -30,10 +36,10 @@ class AppInterceptors extends Interceptor {
 
   @override
   Future onError(DioError err) {
-    if (err.message.contains("ERROR_001")) {
-      navigatorKey.currentState
-          .pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
-    }
+    print(err);
+
+    navigatorKey.currentState
+        .pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
 
     return super.onError(err);
   }
