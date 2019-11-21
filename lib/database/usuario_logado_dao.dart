@@ -8,6 +8,7 @@ class UsuarioLogados extends Table {
   IntColumn get usuarioId => integer()();
   TextColumn get usuarioNome => text()();
   TextColumn get usuarioEmail => text()();
+  TextColumn get usuarioSenha => text()();
   IntColumn get usuarioAtivo => integer()();
   TextColumn get usuarioSobre => text()();
 

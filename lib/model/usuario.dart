@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+@JsonSerializable()
 class Usuario extends Equatable {
   int usuarioId, usuarioAtivo;
   String usuarioNome, usuarioEmail, usuarioSenha, usuarioSobre;
@@ -23,13 +25,15 @@ class Usuario extends Equatable {
     usuarioSobre = map['usuarioSobre'];
   }
 
-  Usuario.fromJson(Map<String, dynamic> json)
-      : usuarioId = json['usuarioId'],
-        usuarioNome = json['usuarioNome'],
-        usuarioEmail = json['usuarioEmail'],
-        usuarioSenha = json['usuarioSenha'],
-        usuarioAtivo = json['usuarioAtivo'],
-        usuarioSobre = json['usuarioSobre'];
+  factory Usuario.fromJson(Map<String, dynamic> json) {
+    return Usuario(
+        usuarioId: int.parse(json['usuarioId']),
+        usuarioNome: json['usuarioNome'],
+        usuarioEmail: json['usuarioEmail'],
+        usuarioSenha: json['usuarioSenha'],
+        usuarioAtivo: int.parse(json['usuarioAtivo']),
+        usuarioSobre: json['usuarioSobre']);
+  }
 
   Map<String, dynamic> toJson() => {
         'usuarioId': usuarioId,

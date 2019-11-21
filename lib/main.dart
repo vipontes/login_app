@@ -3,18 +3,34 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:login_app/utils/app_localizations.dart';
 import 'package:login_app/utils/route_generator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'database/moor_database.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
-void main() => runApp(LoginApp());
+Future<void> main() async {
+  bool _isLoggedIn = false;
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var prefs = await SharedPreferences.getInstance();
+  _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  runApp(LoginApp(isLoggedIn: _isLoggedIn));
+}
 
 class LoginApp extends StatelessWidget {
+  final bool isLoggedIn;
+
+  const LoginApp({Key key, this.isLoggedIn}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      builder: (_) => AppDatabase().loginDao,
+    return MultiProvider(
+      providers: [
+        Provider(builder: (context) => AppDatabase()),
+      ],
       child: MaterialApp(
         title: 'Login App',
         theme: ThemeData(
@@ -43,7 +59,7 @@ class LoginApp extends StatelessWidget {
           }
           return supportedLocales.first;
         },
-        initialRoute: '/login',
+        initialRoute: (isLoggedIn) ? '/' : '/login',
         onGenerateRoute: RouteGenerator.generateRoute,
         navigatorKey: navigatorKey,
       ),

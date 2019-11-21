@@ -211,12 +211,14 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
   final int usuarioId;
   final String usuarioNome;
   final String usuarioEmail;
+  final String usuarioSenha;
   final int usuarioAtivo;
   final String usuarioSobre;
   UsuarioLogado(
       {@required this.usuarioId,
       @required this.usuarioNome,
       @required this.usuarioEmail,
+      @required this.usuarioSenha,
       @required this.usuarioAtivo,
       @required this.usuarioSobre});
   factory UsuarioLogado.fromData(
@@ -232,6 +234,8 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
           .mapFromDatabaseResponse(data['${effectivePrefix}usuario_nome']),
       usuarioEmail: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}usuario_email']),
+      usuarioSenha: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}usuario_senha']),
       usuarioAtivo: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}usuario_ativo']),
       usuarioSobre: stringType
@@ -244,6 +248,7 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
       usuarioId: serializer.fromJson<int>(json['usuarioId']),
       usuarioNome: serializer.fromJson<String>(json['usuarioNome']),
       usuarioEmail: serializer.fromJson<String>(json['usuarioEmail']),
+      usuarioSenha: serializer.fromJson<String>(json['usuarioSenha']),
       usuarioAtivo: serializer.fromJson<int>(json['usuarioAtivo']),
       usuarioSobre: serializer.fromJson<String>(json['usuarioSobre']),
     );
@@ -255,6 +260,7 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
       'usuarioId': serializer.toJson<int>(usuarioId),
       'usuarioNome': serializer.toJson<String>(usuarioNome),
       'usuarioEmail': serializer.toJson<String>(usuarioEmail),
+      'usuarioSenha': serializer.toJson<String>(usuarioSenha),
       'usuarioAtivo': serializer.toJson<int>(usuarioAtivo),
       'usuarioSobre': serializer.toJson<String>(usuarioSobre),
     };
@@ -273,6 +279,9 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
       usuarioEmail: usuarioEmail == null && nullToAbsent
           ? const Value.absent()
           : Value(usuarioEmail),
+      usuarioSenha: usuarioSenha == null && nullToAbsent
+          ? const Value.absent()
+          : Value(usuarioSenha),
       usuarioAtivo: usuarioAtivo == null && nullToAbsent
           ? const Value.absent()
           : Value(usuarioAtivo),
@@ -286,12 +295,14 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
           {int usuarioId,
           String usuarioNome,
           String usuarioEmail,
+          String usuarioSenha,
           int usuarioAtivo,
           String usuarioSobre}) =>
       UsuarioLogado(
         usuarioId: usuarioId ?? this.usuarioId,
         usuarioNome: usuarioNome ?? this.usuarioNome,
         usuarioEmail: usuarioEmail ?? this.usuarioEmail,
+        usuarioSenha: usuarioSenha ?? this.usuarioSenha,
         usuarioAtivo: usuarioAtivo ?? this.usuarioAtivo,
         usuarioSobre: usuarioSobre ?? this.usuarioSobre,
       );
@@ -301,6 +312,7 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
           ..write('usuarioId: $usuarioId, ')
           ..write('usuarioNome: $usuarioNome, ')
           ..write('usuarioEmail: $usuarioEmail, ')
+          ..write('usuarioSenha: $usuarioSenha, ')
           ..write('usuarioAtivo: $usuarioAtivo, ')
           ..write('usuarioSobre: $usuarioSobre')
           ..write(')'))
@@ -312,8 +324,10 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
       usuarioId.hashCode,
       $mrjc(
           usuarioNome.hashCode,
-          $mrjc(usuarioEmail.hashCode,
-              $mrjc(usuarioAtivo.hashCode, usuarioSobre.hashCode)))));
+          $mrjc(
+              usuarioEmail.hashCode,
+              $mrjc(usuarioSenha.hashCode,
+                  $mrjc(usuarioAtivo.hashCode, usuarioSobre.hashCode))))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
@@ -321,6 +335,7 @@ class UsuarioLogado extends DataClass implements Insertable<UsuarioLogado> {
           other.usuarioId == usuarioId &&
           other.usuarioNome == usuarioNome &&
           other.usuarioEmail == usuarioEmail &&
+          other.usuarioSenha == usuarioSenha &&
           other.usuarioAtivo == usuarioAtivo &&
           other.usuarioSobre == usuarioSobre);
 }
@@ -329,12 +344,14 @@ class UsuarioLogadosCompanion extends UpdateCompanion<UsuarioLogado> {
   final Value<int> usuarioId;
   final Value<String> usuarioNome;
   final Value<String> usuarioEmail;
+  final Value<String> usuarioSenha;
   final Value<int> usuarioAtivo;
   final Value<String> usuarioSobre;
   const UsuarioLogadosCompanion({
     this.usuarioId = const Value.absent(),
     this.usuarioNome = const Value.absent(),
     this.usuarioEmail = const Value.absent(),
+    this.usuarioSenha = const Value.absent(),
     this.usuarioAtivo = const Value.absent(),
     this.usuarioSobre = const Value.absent(),
   });
@@ -342,12 +359,14 @@ class UsuarioLogadosCompanion extends UpdateCompanion<UsuarioLogado> {
       {Value<int> usuarioId,
       Value<String> usuarioNome,
       Value<String> usuarioEmail,
+      Value<String> usuarioSenha,
       Value<int> usuarioAtivo,
       Value<String> usuarioSobre}) {
     return UsuarioLogadosCompanion(
       usuarioId: usuarioId ?? this.usuarioId,
       usuarioNome: usuarioNome ?? this.usuarioNome,
       usuarioEmail: usuarioEmail ?? this.usuarioEmail,
+      usuarioSenha: usuarioSenha ?? this.usuarioSenha,
       usuarioAtivo: usuarioAtivo ?? this.usuarioAtivo,
       usuarioSobre: usuarioSobre ?? this.usuarioSobre,
     );
@@ -399,6 +418,20 @@ class $UsuarioLogadosTable extends UsuarioLogados
     );
   }
 
+  final VerificationMeta _usuarioSenhaMeta =
+      const VerificationMeta('usuarioSenha');
+  GeneratedTextColumn _usuarioSenha;
+  @override
+  GeneratedTextColumn get usuarioSenha =>
+      _usuarioSenha ??= _constructUsuarioSenha();
+  GeneratedTextColumn _constructUsuarioSenha() {
+    return GeneratedTextColumn(
+      'usuario_senha',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _usuarioAtivoMeta =
       const VerificationMeta('usuarioAtivo');
   GeneratedIntColumn _usuarioAtivo;
@@ -428,8 +461,14 @@ class $UsuarioLogadosTable extends UsuarioLogados
   }
 
   @override
-  List<GeneratedColumn> get $columns =>
-      [usuarioId, usuarioNome, usuarioEmail, usuarioAtivo, usuarioSobre];
+  List<GeneratedColumn> get $columns => [
+        usuarioId,
+        usuarioNome,
+        usuarioEmail,
+        usuarioSenha,
+        usuarioAtivo,
+        usuarioSobre
+      ];
   @override
   $UsuarioLogadosTable get asDslTable => this;
   @override
@@ -459,6 +498,14 @@ class $UsuarioLogadosTable extends UsuarioLogados
               d.usuarioEmail.value, _usuarioEmailMeta));
     } else if (usuarioEmail.isRequired && isInserting) {
       context.missing(_usuarioEmailMeta);
+    }
+    if (d.usuarioSenha.present) {
+      context.handle(
+          _usuarioSenhaMeta,
+          usuarioSenha.isAcceptableValue(
+              d.usuarioSenha.value, _usuarioSenhaMeta));
+    } else if (usuarioSenha.isRequired && isInserting) {
+      context.missing(_usuarioSenhaMeta);
     }
     if (d.usuarioAtivo.present) {
       context.handle(
@@ -498,6 +545,9 @@ class $UsuarioLogadosTable extends UsuarioLogados
     }
     if (d.usuarioEmail.present) {
       map['usuario_email'] = Variable<String, StringType>(d.usuarioEmail.value);
+    }
+    if (d.usuarioSenha.present) {
+      map['usuario_senha'] = Variable<String, StringType>(d.usuarioSenha.value);
     }
     if (d.usuarioAtivo.present) {
       map['usuario_ativo'] = Variable<int, IntType>(d.usuarioAtivo.value);

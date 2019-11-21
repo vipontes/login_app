@@ -65,10 +65,7 @@ class QuotesApiService implements IQuotesApi {
             new ErrorHandler(response.statusCode, decodedMessage['message']));
       }
     } on DioError catch (error) {
-      final Map<String, dynamic> decodedMessage =
-          json.decode(error.response.toString());
-      return Left(new ErrorHandler(
-          error.response.statusCode, decodedMessage['message']));
+      return Left(new ErrorHandler(404, error.message));
     }
   }
 
@@ -79,9 +76,7 @@ class QuotesApiService implements IQuotesApi {
           options: Options(headers: {"requiresToken": true}));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> decodedMessage =
-            json.decode(response.data.toString());
-        Usuario usuario = Usuario.fromMap(decodedMessage);
+        final usuario = Usuario.fromJson(response.data);
         return Right(usuario);
       } else {
         final Map<String, dynamic> decodedMessage =
@@ -90,10 +85,7 @@ class QuotesApiService implements IQuotesApi {
             new ErrorHandler(response.statusCode, decodedMessage['message']));
       }
     } on DioError catch (error) {
-      final Map<String, dynamic> decodedMessage =
-          json.decode(error.response.toString());
-      return Left(new ErrorHandler(
-          error.response.statusCode, decodedMessage['message']));
+      return Left(new ErrorHandler(404, error.message));
     }
   }
 }

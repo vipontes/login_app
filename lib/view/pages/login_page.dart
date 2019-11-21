@@ -93,7 +93,6 @@ class _LoginPageState extends State<LoginPage> {
                           top: 20, left: 30, right: 30, bottom: 4),
                       child: TextFormField(
                         controller: _passwordController,
-                        keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                         decoration: InputDecoration(
                           filled: true,

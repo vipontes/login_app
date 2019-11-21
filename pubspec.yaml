@@ -4,7 +4,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">2.4.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -17,7 +17,7 @@ dependencies:
   scoped_model: ^0.3.0
   font_awesome_flutter: ^8.0.1
   http: ^0.12.0
-  dio: ^3.0.0
+  dio: ^3.0.5
   equatable: ^0.4.0
   dartz: ^0.8.6
   shared_preferences: ^0.5.3
@@ -42,6 +42,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lang/pt.json
-    - lang/en.json
+    - lang/pt_BR.json
+    - lang/en_US.json
     - assets/img/
