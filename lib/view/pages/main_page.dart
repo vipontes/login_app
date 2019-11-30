@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login_app/utils/app_localizations.dart';
 
+import '../../bottom_bar.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -33,6 +35,13 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Color(0xFFF17532),
+        child: Icon(Icons.fastfood),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

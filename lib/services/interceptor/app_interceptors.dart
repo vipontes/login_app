@@ -17,8 +17,8 @@ class AppInterceptors extends Interceptor {
       final token = prefs.get("token");
       final tokenDecoded = JwtHelper.parseJwt(token);
       final expiredAt = tokenDecoded['expired_at'];
-      var parsedDate = DateTime.parse(expiredAt);
-      var now = new DateTime.now();
+      final parsedDate = DateTime.parse(expiredAt);
+      final now = new DateTime.now();
       final difference = parsedDate.difference(now).inSeconds;
       if (difference > 0) {
         options.headers.addAll({"Authorization": "Bearer $token"});
@@ -31,6 +31,7 @@ class AppInterceptors extends Interceptor {
 
   @override
   Future onResponse(Response response) {
+    print(response);
     return super.onResponse(response);
   }
 

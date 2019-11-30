@@ -108,6 +108,7 @@ class LoginPageViewModel extends Model {
         usuarioId: usuario.usuarioId,
         usuarioNome: usuario.usuarioNome,
         usuarioEmail: usuario.usuarioEmail,
+        usuarioSenha: usuario.usuarioSenha,
         usuarioAtivo: usuario.usuarioAtivo,
         usuarioSobre: usuario.usuarioSobre));
   }

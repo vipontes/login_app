@@ -55,6 +55,7 @@ class QuotesApiService implements IQuotesApi {
         'password': password,
         'device': device,
       });
+
       if (response.statusCode == 200) {
         Token tokens = Token.fromJson(response.data);
         return Right(tokens);
